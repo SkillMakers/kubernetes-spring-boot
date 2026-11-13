@@ -41,7 +41,7 @@ Kubernetes 1.37.0 (kind v0.33.0, un nœud), Docker Desktop 29.3.1, le 13/11/2026
 
 | Fichier | Ce qu'il montre |
 |---|---|
-| `02-piege-latest.txt` | l'image `orders:latest` est sur le nœud, mais le pod reste en `ImagePullBackOff` : avec `:latest`, `imagePullPolicy` vaut `Always` |
+| `02-piege-latest.txt` | l'image `orders:latest` est sur le nœud, mais le pod reste en `ErrImagePull` / `ImagePullBackOff` : avec `:latest`, `imagePullPolicy` vaut `Always` |
 | `03-secret.txt` | un Secret se relit en clair avec `base64 -d` : encodé, pas chiffré |
 | `04-deploiement.txt` | 3 pods « disponibles » en 2,4 s, curl refusé juste après, première réponse à 49,2 s |
 | `05-service.txt` | le Service répartit 9 requêtes sur les 3 pods |
