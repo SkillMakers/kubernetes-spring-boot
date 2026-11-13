@@ -1,0 +1,4 @@
+$ kubectl get nodes
+NAME                 STATUS   ROLES           AGE   VERSION
+demo-control-plane   Ready    control-plane   81m   v1.37.0
+

@@ -1,0 +1,12 @@
+$ kubectl patch configmap orders-config -p '{"data":{"APP_MESSAGE":"Salut"}}'
+configmap/orders-config patched
+
+# 30 s plus tard :
+$ curl -s http://orders/info
+{"pod":"orders-db66c5b75-t8gqc","message":"Bonjour","version":"1"}
+
+$ kubectl rollout restart deployment/orders
+deployment.apps/orders restarted
+
+$ curl -s http://orders/info
+{"version":"1","message":"Salut","pod":"orders-65f79c8b47-rf6lh"}

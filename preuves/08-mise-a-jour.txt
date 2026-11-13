@@ -1,0 +1,37 @@
+$ kubectl set image deployment/orders orders=orders:2.0
+deployment.apps/orders image updated
+
+$ kubectl rollout status deployment/orders --timeout=240s
+Waiting for deployment "orders" rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for deployment "orders" rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for deployment "orders" rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for deployment "orders" rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for deployment "orders" rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for deployment "orders" rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for deployment "orders" rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for deployment "orders" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "orders" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "orders" rollout to finish: 1 old replicas are pending termination...
+deployment "orders" successfully rolled out
+
+$ curl -s http://orders/info
+{"pod":"orders-d7489cbfb-cmpds","version":"2","message":"Salut"}
+
+$ kubectl rollout history deployment/orders
+deployment.apps/orders 
+REVISION  CHANGE-CAUSE
+1         <none>
+4         <none>
+5         <none>
+
+
+$ kubectl rollout undo deployment/orders
+Warning: resource deployments/orders was previously managed with 'kubectl apply'. Rolling back will not update the kubectl.kubernetes.io/last-applied-configuration annotation, which may cause unexpected behavior on future 'kubectl apply' operations. Consider using 'kubectl apply' with your previous configuration file instead.
+deployment.apps/orders rolled back
+
+$ curl -s http://orders/info
+{"version":"1","message":"Salut","pod":"orders-65f79c8b47-dk6z9"}
+
+# Requêtes envoyées en continu pendant la mise à jour et le retour arrière (une toutes les 0,1 s) :
+    557 000
+   1279 200

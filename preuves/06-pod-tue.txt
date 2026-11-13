@@ -1,0 +1,17 @@
+$ kubectl get pods -l app=orders
+NAME                     READY   STATUS    RESTARTS   AGE
+orders-db66c5b75-5t8d7   1/1     Running   0          69s
+orders-db66c5b75-s8s7f   1/1     Running   0          69s
+orders-db66c5b75-t8gqc   1/1     Running   0          69s
+
+$ kubectl delete pod orders-db66c5b75-5t8d7 --wait=false
+pod "orders-db66c5b75-5t8d7" deleted from default namespace
+
+$ kubectl get pods -l app=orders
+NAME                     READY   STATUS    RESTARTS   AGE
+orders-db66c5b75-s8s7f   1/1     Running   0          111s
+orders-db66c5b75-t8gqc   1/1     Running   0          111s
+orders-db66c5b75-w9lr7   1/1     Running   0          40s
+
+# Du delete au remplaçant « disponible » pour Kubernetes : 4.7 s
+# Du delete à la première réponse du remplaçant : 39.1 s

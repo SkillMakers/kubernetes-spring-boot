@@ -1,0 +1,13 @@
+$ for i in $(seq 9); do curl -s http://orders/info; echo; done   # depuis un pod du cluster
+{"message":"Bonjour","version":"1","pod":"orders-db66c5b75-5t8d7"}
+{"message":"Bonjour","version":"1","pod":"orders-db66c5b75-5t8d7"}
+{"pod":"orders-db66c5b75-t8gqc","message":"Bonjour","version":"1"}
+{"pod":"orders-db66c5b75-s8s7f","message":"Bonjour","version":"1"}
+{"message":"Bonjour","version":"1","pod":"orders-db66c5b75-5t8d7"}
+{"message":"Bonjour","version":"1","pod":"orders-db66c5b75-5t8d7"}
+{"message":"Bonjour","version":"1","pod":"orders-db66c5b75-5t8d7"}
+{"pod":"orders-db66c5b75-t8gqc","message":"Bonjour","version":"1"}
+{"pod":"orders-db66c5b75-t8gqc","message":"Bonjour","version":"1"}
+
+$ curl -s http://orders/commandes
+[]

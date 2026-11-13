@@ -1,0 +1,3 @@
+# Version 2 de l'image pour la démo de mise à jour : même code, seule la version affichée change.
+FROM orders:1.0
+ENV APP_VERSION=2

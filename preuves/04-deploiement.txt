@@ -1,0 +1,30 @@
+$ kubectl apply -f k8s/orders.yaml
+configmap/orders-config created
+deployment.apps/orders created
+service/orders unchanged
+
+$ kubectl rollout status deployment/orders --timeout=240s
+deployment "orders" successfully rolled out
+
+# Du apply aux 3 pods disponibles : 2.4 s
+
+$ curl -s http://orders/info   # aussitôt après
+code de sortie de curl : 7
+
+# Du apply à la première réponse de l'appli : 49.2 s
+
+$ kubectl logs -l app=orders --prefix | grep Started
+[pod/orders-db66c5b75-5t8d7/orders] 2026-11-13T13:56:09.163Z  INFO 1 --- [orders] [           main] com.example.orders.OrdersApplication     : Started OrdersApplication in 41.451 seconds (process running for 45.196)
+[pod/orders-db66c5b75-s8s7f/orders] 2026-11-13T13:56:08.272Z  INFO 1 --- [orders] [           main] com.example.orders.OrdersApplication     : Started OrdersApplication in 40.695 seconds (process running for 44.167)
+[pod/orders-db66c5b75-t8gqc/orders] 2026-11-13T13:56:09.223Z  INFO 1 --- [orders] [           main] com.example.orders.OrdersApplication     : Started OrdersApplication in 41.657 seconds (process running for 45.253)
+
+$ kubectl get pods -l app=orders -o wide
+NAME                     READY   STATUS    RESTARTS   AGE   IP            NODE                 NOMINATED NODE   READINESS GATES
+orders-db66c5b75-5t8d7   1/1     Running   0          62s   10.244.0.60   demo-control-plane   <none>           <none>
+orders-db66c5b75-s8s7f   1/1     Running   0          62s   10.244.0.61   demo-control-plane   <none>           <none>
+orders-db66c5b75-t8gqc   1/1     Running   0          62s   10.244.0.59   demo-control-plane   <none>           <none>
+
+$ kubectl get service orders
+NAME     TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+orders   ClusterIP   10.96.66.50   <none>        80/TCP    79m
+

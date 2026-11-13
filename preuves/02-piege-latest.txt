@@ -1,0 +1,23 @@
+# L'image orders:latest est bien chargée sur le nœud :
+$ docker exec demo-control-plane crictl images | grep orders
+docker.io/library/orders                        1.0                  2388fcf7ff87b       404MB
+docker.io/library/orders                        latest               2388fcf7ff87b       404MB
+docker.io/library/orders                        2.0                  4db6f1c5897a3       404MB
+
+$ kubectl get pods -l app=essai-latest
+NAME                            READY   STATUS         RESTARTS   AGE
+essai-latest-6978697f8b-mcn9d   0/1     ErrImagePull   0          45s
+
+$ kubectl get deployment essai-latest -o jsonpath='{.spec.template.spec.containers[0].imagePullPolicy}'
+Always
+
+$ kubectl describe pod -l app=essai-latest | grep -A12 Events
+Events:
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  49s                default-scheduler  Successfully assigned default/essai-latest-6978697f8b-mcn9d to demo-control-plane
+  Normal   BackOff    17s (x2 over 46s)  kubelet            spec.containers{orders}: Back-off pulling image "orders:latest"
+  Warning  Failed     17s (x2 over 46s)  kubelet            spec.containers{orders}: Error: ImagePullBackOff
+  Normal   Pulling    2s (x3 over 48s)   kubelet            spec.containers{orders}: Pulling image "orders:latest"
+  Warning  Failed     1s (x3 over 47s)   kubelet            spec.containers{orders}: Failed to pull image "orders:latest": failed to pull and unpack image "docker.io/library/orders:latest": failed to resolve reference "docker.io/library/orders:latest": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+  Warning  Failed     1s (x3 over 47s)   kubelet            spec.containers{orders}: Error: ErrImagePull
