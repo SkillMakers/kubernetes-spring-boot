@@ -54,6 +54,11 @@ Les durées dépendent de la machine : elles ont varié d'un passage à l'autre 
 
 ## Ce que la démo simplifie
 
+- **`MaxRAMPercentage=75` est trop pour une limite de 512 Mi.** Mesuré dans la vidéo suivante : la JVM est tuée par le
+  noyau (code 137) avant d'avoir rempli son tas, car elle occupe 180 à 270 Mo hors du tas. Règle : au moins 250 Mo hors
+  du tas, par exemple `MaxRAMPercentage=50` à 512 Mi, avec `-XX:+ExitOnOutOfMemoryError`. Détails et preuves :
+  [SkillMakers/kubernetes-spring-boot-2](https://github.com/SkillMakers/kubernetes-spring-boot-2).
+
 - **Un seul nœud.** En production, les pods sont répartis sur plusieurs machines.
 - **PostgreSQL sans volume persistant.** Ses données disparaissent avec le pod. Une vraie base dans Kubernetes demande
   un StatefulSet et un volume, ou une base gérée hors du cluster.
